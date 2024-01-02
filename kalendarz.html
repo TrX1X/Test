@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kalendarz</title>
+<link rel="stylesheet" href="styl.css">
+</head>
+<body>
+
+<div id="baner1">
+Kalendarz
+</div>
+
+<div id="baner2">
+<form method="post">
+<button name="miesiac" type="submit" value="miesiac=1">Styczeń</button>
+<button name="miesiac" type="submit" value="miesiac=2">Luty</button>
+<button name="miesiac" type="submit" value="miesiac=3">Marzec</button>
+<button name="miesiac" type="submit" value="miesiac=4">Kwiecień</button>
+<button name="miesiac" type="submit" value="miesiac=5">Maj</button>
+<button name="miesiac" type="submit" value="miesiac=6">Czarwiec</button>
+<button name="miesiac" type="submit" value="miesiac=7">Lipiec</button>
+<button name="miesiac" type="submit" value="miesiac=8">Sierpień</button>
+<button name="miesiac" type="submit" value="miesiac=9">Wrzesień</button>
+<button name="miesiac" type="submit" value="miesiac=10">Październik</button>
+<button name="miesiac" type="submit" value="miesiac=11">Listopad</button>
+<button name="miesiac" type="submit" value="miesiac=12">Grudzień</button>
+</form>
+</div>
+
+<div id="glowny">
+
+<?php
+
+
+
+if(isset($_POST["miesiac"]))
+{
+$otw = mysqli_connect("localhost","root","","daty");
+$mies = $_POST["miesiac"];
+$zpt1 = "SELECT * FROM daty WHERE $mies";
+$wyn =mysqli_query($otw,$zpt1);
+
+while($a = mysqli_fetch_row($wyn))
+{
+echo "<div id='dzien'>
+<b>$a[3] $a[4] $a[1]</b><br>
+<span>$a[5]</span>
+  </div>
+";
+}
+}
+
+?>
+
+</div>
+
+<div id="stopka">
+<form method="post">
+Edycja planów:<br>
+Dzień: <input type="text" name="dzien">
+Miesiąc: <input type="text" name="miesiac">
+Co planujemy? <input type="text" name="plany">
+<input type="submit" name="wyslij" value="Prześlij">
+</form>
+
+<?php
+
+if(isset($_POST["wyslij"]))
+{
+if(isset($_POST["dzien"]))
+{
+$dzien = $_POST["dzien"];
+$miesiac = $_POST["miesiac"];
+$plany = $_POST["plany"];
+$otw = mysqli_connect("localhost","root","","daty");
+$zpt2 = "UPDATE `daty` SET `plany`='$plany' WHERE dzien='$dzien' AND miesiac='$miesiac'";
+mysqli_query($otw,$zpt2);
+echo "<meta http-equiv='refresh' content='0'>";
+}
+}
+
+?>
+
+</div>
+
+
+
+</body>
+</html>
